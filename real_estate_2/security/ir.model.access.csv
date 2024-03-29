@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_real_state,real.state,model_real_state,,1,1,1,1
+access_real_estate_offer,real.estate.offer,model_real_estate_offer,,1,1,1,1
+access_real_estate_tags,real.estate.tags,model_real_estate_tags,,1,1,1,1
+access_rejection_reason,rejection.reason,model_rejection_reason,,1,1,1,1

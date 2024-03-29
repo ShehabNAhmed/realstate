@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate_building_form_view" model="ir.ui.view">
+        <field name="name">real.state.form</field>
+        <field name="model">real.state</field>
+        <field name="arch" type="xml">
+            <form string="Real State">
+                <header>
+                    <button name="action_pending" states="draft" string="Pending" type="object" confirm="!!!!!!!!!!!!!!"/>
+                    <button name="action_approve" states="draft,pending" string="Approve" type="object"/>
+                    <button name="%(real_estate_2.action_rejection_reason)d" string="Reject" type="action"
+                            attrs="{'invisible': [('state', '=', 'rejected')]}"/>
+                    <button name="action_reset" states="rejected" string="Reset to Draft" type="object"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name_1"/>
+                            <field name="partner_id"/>
+                            <field name="phone" attrs="{'invisible': [('phone', '=', False)]}"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="remaining_days"/>
+                            <field name="expected_price"/>
+                            <field name="test1"/>
+                            <field name="test2"/>
+<!--                            <field name="test3" widget="image"/>-->
+                        </group>
+                        <group>
+                            <field name="selling_price"/>
+                            <field name="bedrooms"/>
+                            <field name="garage"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="garden_orientation"/>
+                            <field name="area"/>
+                            <field name="garden_area"/>
+                            <field name="total_area"/>
+                            <field name="reason"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                         <page string="Offer Lines">
+                            <field name="offer_line_ids">
+                                <tree editable="top">
+                                    <field name="partner_id"/>
+                                    <field name="price"/>
+                                    <field name="offer_date"/>
+                                    <field name="desc" attrs="{'column_invisible': [('parent.phone', '=', False)]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Desc">
+                            <group>
+                                <field name="description"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="real_estate_tree_view" model="ir.ui.view">
+        <field name="name">real.state.tree.view</field>
+        <field name="model">real.state</field>
+        <field name="arch" type="xml">
+            <tree string="Real State">
+                <field name="name_1"/>
+                <field name="partner_id"/>
+                <field name="postcode"/>
+                <field name="date_availability"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms"/>
+                <field name="garage"/>
+                <field name="garden_orientation"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_real_estate_search">
+        <field name="name">real.state.search</field>
+        <field name="model">real.state</field>
+        <field name="arch" type="xml">
+            <search string="Search Real Estate">
+                <field name="name_1"/>
+                <field name="garden_orientation"/>
+                <filter string="Have Garage" name="have_garage" domain="[('garage','=',True)]"/>
+                <filter string="No Garage" name="no_garage" domain="[('garage','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Orientation" name="groupby_garden_orientation" context="{'group_by': 'garden_orientation'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="real_state_action" model="ir.actions.act_window">
+        <field name="name">Real State</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">real.state</field>
+        <field name="domain">['|',('garage','=',True),('garden_orientation','=','west')]</field>
+        <field name="context">{'default_garage': True, 'default_name_1': 'asd', 'search_default_have_garage': 1}</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <menuitem
+        name="Real State"
+        id="menu_real_state_root"
+        sequence="5"/>
+
+    <menuitem
+        name="Real State building"
+        parent="menu_real_state_root"
+        action="real_state_action"
+        id="menu_real_state_sub"
+        sequence="5"/>
+
+</odoo>
